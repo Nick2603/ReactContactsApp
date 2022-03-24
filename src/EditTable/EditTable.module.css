@@ -1,0 +1,19 @@
+.form {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+}
+
+.form>* {
+   margin: 3px;
+}
+
+.navLink {
+   text-decoration: none;
+   color: black;
+}
+
+.navLink:hover {
+   color: lightskyblue;
+}
