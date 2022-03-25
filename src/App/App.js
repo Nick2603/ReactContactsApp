@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
-import EditTable from '../EditTable/EditTable';
+import { EditTableFunctional } from '../EditTable/EditTableFunctional';
 import {
   BrowserRouter,
   Routes,
@@ -18,7 +18,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="edittable" element={<EditTable />} />
+            <Route path="edittable" element={<EditTableFunctional />} />
           </Routes>
         </div>
         <Footer />
