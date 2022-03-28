@@ -1,32 +1,31 @@
-import React from "react";
+import React, { FC, useState, useEffect } from "react";
 import styles from "./Main.module.css";
 import { Link } from "react-router-dom";
+import { IResult } from "../types/types";
 
-class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      result: [],
-    };
-  }
+export const MainFunctional: FC = () => {
+  const [result, setResult] = useState<IResult[]>([]);
+  const [error, setError] = useState<Error | null>(null);
 
-  getContacts = () => {
+  const getContacts = () => {
     fetch("https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user")
       .then((response) => response.json())
-      .then((result) => {
-        this.setState({
-          result,
-        });
-      })
-      .catch((error) => console.log(error));
+      .then(
+        (result) => {
+          setResult(result);
+        },
+        (error) => {
+          setError(error);
+        }
+      );
   };
 
-  componentDidMount() {
-    this.getContacts();
-  }
+  useEffect(() => {
+    getContacts();
+  }, []);
 
-  handleDelete = (event) => {
-    let idToDelete = event.target.id;
+  const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+    let idToDelete = (event.target as Element).id;
     if (idToDelete) {
       fetch(`https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user/${idToDelete}`, {
         method: "DELETE",
@@ -35,17 +34,16 @@ class Main extends React.Component {
           alert(`Contact with id: ${idToDelete} is deleted`);
         })
         .then(() => {
-          this.setState({
-            result: this.state.result.filter((elem) => elem.id !== idToDelete),
-          });
+          setResult(result.filter((elem) => elem.id !== idToDelete));
         });
     }
   };
 
-  render() {
-    let { result } = this.state;
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
+  } else {
     return (
-      <main className={styles.main} onClick={this.handleDelete}>
+      <main className={styles.main} onClick={handleDelete}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -76,6 +74,4 @@ class Main extends React.Component {
       </main>
     );
   }
-}
-
-export default Main;
+};

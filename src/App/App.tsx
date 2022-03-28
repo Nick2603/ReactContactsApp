@@ -1,16 +1,12 @@
-import styles from './App.module.css';
-import { Header } from '../Header/Header';
-import { MainFunctional } from '../Main/MainFunctional';
-import { Footer } from '../Footer/Footer';
-import { EditTableFunctional } from '../EditTable/EditTableFunctional';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { FC } from "react";
+import styles from "./App.module.css";
+import { Header } from "../Header/Header";
+import { MainFunctional } from "../Main/MainFunctional";
+import { Footer } from "../Footer/Footer";
+import { EditTableFunctional } from "../EditTable/EditTableFunctional";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-
+const App: FC = () => {
   return (
     <BrowserRouter>
       <div className={styles.wrapper}>
