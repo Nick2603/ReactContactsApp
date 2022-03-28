@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from './EditTable.module.css';
 import { Link, useNavigate } from "react-router-dom";
 
-export const EditTableFunctional = function () {
+export const EditTableFunctional = () => {
 
-   const [result, setresult] = useState([]);
+   const [result, setResult] = useState([]);
    const [FirstName, setFirstName] = useState('');
    const [LastName, setLastName] = useState('');
    const [Phone, setPhone] = useState('');
@@ -17,7 +17,7 @@ export const EditTableFunctional = function () {
          .then((response) => response.json())
          .then(
             (result) => {
-               setresult(result)
+               setResult(result)
             },
             (error) => {
                setError(error);
@@ -138,4 +138,4 @@ export const EditTableFunctional = function () {
          </form>
       )
    };
-}
+};

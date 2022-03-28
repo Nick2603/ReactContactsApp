@@ -1,7 +1,7 @@
 import styles from './App.module.css';
-import Header from '../Header/Header';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
+import { Header } from '../Header/Header';
+import { MainFunctional } from '../Main/MainFunctional';
+import { Footer } from '../Footer/Footer';
 import { EditTableFunctional } from '../EditTable/EditTableFunctional';
 import {
   BrowserRouter,
@@ -17,7 +17,7 @@ function App() {
         <div className={styles.forFooterWrapper}>
           <Header />
           <Routes>
-            <Route path="/" element={<Main />} />
+            <Route path="/" element={<MainFunctional />} />
             <Route path="edittable" element={<EditTableFunctional />} />
           </Routes>
         </div>
