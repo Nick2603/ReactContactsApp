@@ -17,20 +17,3 @@
 .td:last-child {
    border: 0px;
 }
-
-.navLink {
-   text-decoration: none;
-   margin: 5px;
-   color: black;
-}
-
-.navLink:hover {
-   color: lightskyblue;
-}
-
-.nav {
-   display: inline-block;
-   max-width: 400px;
-   text-align: center;
-   margin: 5px;
-}

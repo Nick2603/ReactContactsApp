@@ -1,59 +1,49 @@
-import React, { FC, useState, useEffect } from "react";
+import React from "react";
 import styles from "./EditTable.module.css";
-import { useNavigate } from "react-router-dom";
-import { IResult } from "../types/types";
+import { Link } from "react-router-dom";
+import { IResult, IMyState } from "../types/types";
 
-export const EditTableFunctional: FC = () => {
-  const [result, setResult] = useState<IResult[]>([]);
-  const [FirstName, setFirstName] = useState("");
-  const [LastName, setLastName] = useState("");
-  const [Phone, setPhone] = useState("");
-  const [updateId, setupdateId] = useState("");
-  const [error, setError] = useState<Error | null>(null);
-  const navigate = useNavigate();
+class EditTable extends React.Component<{}, IMyState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      result: [],
+      FirstName: "",
+      LastName: "",
+      Phone: "",
+      updateId: "",
+    };
+  }
 
-  const getContacts = () => {
+  getContacts = () => {
     fetch("https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user")
       .then((response) => response.json())
-      .then(
-        (result) => {
-          setResult(result);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
+      .then((result) => {
+        this.setState({
+          result,
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
-  useEffect(() => {
-    getContacts();
-  }, []);
+  componentDidMount() {
+    this.getContacts();
+  }
 
-  const handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-
-    switch (name) {
-      case "FirstName":
-        setFirstName(value);
-        break;
-      case "LastName":
-        setLastName(value);
-        break;
-      case "Phone":
-        setPhone(value);
-        break;
-      case "updateId":
-        setupdateId(value);
-        break;
-      default:
-        break;
-    }
+    this.setState({ [name]: value });
   };
 
-  const submitUpdate = (event: React.FormEvent<HTMLFormElement>) => {
+  submitUpdate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let { updateId, FirstName, LastName, Phone } = this.state;
     if (updateId) {
-      if (result.map((v) => v.id).find((v) => Number(v) === Number(updateId))) {
+      if (
+        (this.state.result as IResult[])
+          .map((v) => v.id)
+          .find((v) => Number(v) === Number(updateId))
+      ) {
         fetch(`https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user/${updateId}`, {
           method: "PUT",
           body: JSON.stringify({
@@ -65,7 +55,7 @@ export const EditTableFunctional: FC = () => {
             "Content-type": "application/json; charset=UTF-8",
           },
         }).then(() => {
-          navigate("/");
+          window.location.href = "/";
         });
       } else {
         alert("This post doesn't exist, try another id!");
@@ -82,24 +72,21 @@ export const EditTableFunctional: FC = () => {
           "Content-type": "application/json; charset=UTF-8",
         },
       }).then(() => {
-        navigate("/");
+        window.location.href = "/";
       });
     }
-    setFirstName("");
-    setLastName("");
-    setPhone("");
-    setupdateId("");
+    this.setState({
+      FirstName: "",
+      LastName: "",
+      Phone: "",
+      updateId: "",
+    });
   };
 
-  const handleBack = () => {
-    navigate("/");
-  };
-
-  if (error) {
-    return <div>Ошибка: {error.message}</div>;
-  } else {
+  render() {
+    let { updateId, FirstName, LastName, Phone } = this.state;
     return (
-      <form className={styles.form} onSubmit={submitUpdate}>
+      <form className={styles.form} onSubmit={this.submitUpdate}>
         <div>Create a new contact or update an existing one</div>
         <label htmlFor="updateId">
           Put contact id to update an existing contact, otherwise a new one will
@@ -111,7 +98,7 @@ export const EditTableFunctional: FC = () => {
           type="text"
           value={updateId}
           placeholder="id to update a contact"
-          onChange={handleUpdate}
+          onChange={this.handleUpdate}
         />
         <label htmlFor="FirstName">Enter your firstname</label>
         <input
@@ -121,7 +108,7 @@ export const EditTableFunctional: FC = () => {
           type="text"
           value={FirstName}
           placeholder="Example: Ivan"
-          onChange={handleUpdate}
+          onChange={this.handleUpdate}
         />
         <label htmlFor="LastName">Enter your lastname</label>
         <input
@@ -131,7 +118,7 @@ export const EditTableFunctional: FC = () => {
           type="text"
           value={LastName}
           placeholder="Example: Ivanov"
-          onChange={handleUpdate}
+          onChange={this.handleUpdate}
         />
         <label htmlFor="Phone">Enter your phone</label>
         <input
@@ -141,11 +128,17 @@ export const EditTableFunctional: FC = () => {
           type="tel"
           value={Phone}
           placeholder="Example: 0988316899"
-          onChange={handleUpdate}
+          onChange={this.handleUpdate}
         />
         <button type="submit">Save</button>
-        <button onClick={handleBack}>Cancel</button>
+        <nav>
+          <Link className={styles.navLink} to="/">
+            Cancel
+          </Link>
+        </nav>
       </form>
     );
   }
-};
+}
+
+export default EditTable;

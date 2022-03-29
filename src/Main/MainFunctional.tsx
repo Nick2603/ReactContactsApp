@@ -1,11 +1,12 @@
 import React, { FC, useState, useEffect } from "react";
 import styles from "./Main.module.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IResult } from "../types/types";
 
 export const MainFunctional: FC = () => {
   const [result, setResult] = useState<IResult[]>([]);
   const [error, setError] = useState<Error | null>(null);
+  const navigate = useNavigate();
 
   const getContacts = () => {
     fetch("https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user")
@@ -39,6 +40,10 @@ export const MainFunctional: FC = () => {
     }
   };
 
+  const handleToEditTable = () => {
+    navigate("/edittable");
+  };
+
   if (error) {
     return <div>Ошибка: {error.message}</div>;
   } else {
@@ -66,11 +71,7 @@ export const MainFunctional: FC = () => {
             </tbody>
           ))}
         </table>
-        <nav className={styles.nav}>
-          <Link className={styles.navLink} to="edittable">
-            Edit Table
-          </Link>
-        </nav>
+        <button onClick={handleToEditTable}>Edit Table</button>
       </main>
     );
   }

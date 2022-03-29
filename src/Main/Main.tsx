@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./Main.module.css";
 import { Link } from "react-router-dom";
+import { IResult, IMyState } from "../types/types";
 
-class Main extends React.Component {
-  constructor(props) {
+class Main extends React.Component<{}, IMyState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       result: [],
@@ -25,8 +26,8 @@ class Main extends React.Component {
     this.getContacts();
   }
 
-  handleDelete = (event) => {
-    let idToDelete = event.target.id;
+  handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+    let idToDelete = (event.target as Element).id;
     if (idToDelete) {
       fetch(`https://6238cbfb00ed1dbc5ab780f6.mockapi.io/user/${idToDelete}`, {
         method: "DELETE",
@@ -36,7 +37,9 @@ class Main extends React.Component {
         })
         .then(() => {
           this.setState({
-            result: this.state.result.filter((elem) => elem.id !== idToDelete),
+            result: (this.state.result as IResult[]).filter(
+              (elem) => elem.id !== idToDelete
+            ),
           });
         });
     }
@@ -55,7 +58,7 @@ class Main extends React.Component {
               <th>Delete a contact</th>
             </tr>
           </thead>
-          {result.map((contact) => (
+          {(result as IResult[]).map((contact) => (
             <tbody key={contact.id}>
               <tr>
                 <td className={styles.td}>{contact.FirstName}</td>

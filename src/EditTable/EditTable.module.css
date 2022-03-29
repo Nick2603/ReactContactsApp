@@ -8,12 +8,3 @@
 .form>* {
    margin: 3px;
 }
-
-.navLink {
-   text-decoration: none;
-   color: black;
-}
-
-.navLink:hover {
-   color: lightskyblue;
-}
